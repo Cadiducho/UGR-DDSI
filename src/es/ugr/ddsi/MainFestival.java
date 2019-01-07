@@ -20,6 +20,11 @@ public class MainFestival {
     }
     
     private Connection connection;
+    private Edicion edicionActual = new Edicion(2, 2018);
+
+    public Edicion getEdicionActual() {
+        return edicionActual;
+    }
 
     public Connection getConnection() {
         return connection;
