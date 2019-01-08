@@ -1,6 +1,8 @@
 package es.ugr.ddsi;
 
+import es.ugr.ddsi.interfaz.PanelCargando;
 import es.ugr.ddsi.interfaz.MenuPrincipal;
+import es.ugr.ddsi.model.Edicion;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -32,13 +34,17 @@ public class MainFestival {
     }
     
     public void initialize() throws SQLException {
+        PanelCargando cargando = new PanelCargando();
+        cargando.setVisible(true);
         System.out.println("Estableciendo conexión...");
         DriverManager.registerDriver( new oracle.jdbc.driver.OracleDriver());
 
+        cargando.updateBar(20);
         connection = DriverManager.getConnection("jdbc:oracle:thin:@oracle0.ugr.es:1521/practbd.oracle0.ugr.es",
             "x1957140", "x1957140");
         connection.setAutoCommit(false);
-
+        
+        cargando.updateBar(70);
         PreparedStatement stmt = connection.prepareStatement("select 1 from edicion");
         ResultSet rs = stmt.executeQuery();
         if (rs.next()) {
@@ -47,10 +53,12 @@ public class MainFestival {
                 return;
             }
         }
-        
+        cargando.updateBar(90);
         
         java.awt.EventQueue.invokeLater(() -> {
+            cargando.updateBar(100);
             new MenuPrincipal(this).setVisible(true);
+            cargando.setVisible(false);
         });
     }
     
