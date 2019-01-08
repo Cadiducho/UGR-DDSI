@@ -1,5 +1,6 @@
 package es.ugr.ddsi;
 
+import es.ugr.ddsi.interfaz.MenuPrincipal;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -20,7 +21,7 @@ public class MainFestival {
     }
     
     private Connection connection;
-    private Edicion edicionActual = new Edicion(2, 2018);
+    private final Edicion edicionActual = new Edicion(2, 2018);
 
     public Edicion getEdicionActual() {
         return edicionActual;
@@ -48,6 +49,9 @@ public class MainFestival {
         }
         
         
+        java.awt.EventQueue.invokeLater(() -> {
+            new MenuPrincipal(this).setVisible(true);
+        });
     }
     
 }
