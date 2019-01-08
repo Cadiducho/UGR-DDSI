@@ -92,7 +92,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
     private void botonGruposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGruposActionPerformed
         java.awt.EventQueue.invokeLater(() -> {
-            //new MenuGrupos(festival).setVisible(true);
+            new MenuGrupos(festival).setVisible(true);
         });
     }//GEN-LAST:event_botonGruposActionPerformed
 
