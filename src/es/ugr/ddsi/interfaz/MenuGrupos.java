@@ -142,7 +142,7 @@ public class MenuGrupos extends javax.swing.JFrame {
         }
         
         java.awt.EventQueue.invokeLater(() -> {
-            //new MenuOfertarGrupo(festival, ofertado).setVisible(true);
+            new MenuOfertarGrupo(festival, ofertado).setVisible(true);
         });
     }//GEN-LAST:event_botonOfertarActionPerformed
 
