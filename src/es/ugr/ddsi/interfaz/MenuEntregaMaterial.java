@@ -1,16 +1,58 @@
 package es.ugr.ddsi.interfaz;
 
 import es.ugr.ddsi.MainFestival;
+import es.ugr.ddsi.model.PedidoDeMaterial;
+import es.ugr.ddsi.model.Producto;
+import es.ugr.ddsi.model.Ubicacion;
+import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 public class MenuEntregaMaterial extends javax.swing.JFrame {
 
     private final MainFestival festival;
     
+    private ArrayList<PedidoDeMaterial> pedidos;
+    private ArrayList<Ubicacion> ubicaciones;
+    
     /**
      * Creates new form MenuEntregaMaterial
+     * @param festival
      */
     public MenuEntregaMaterial(MainFestival festival) {
         this.festival = festival;
+        
+        try {
+            PreparedStatement stm = festival.getConnection().prepareStatement("SELECT id_pedido FROM PedidoDeMaterial");
+            ResultSet rs = stm.executeQuery();
+            
+            pedidos = new ArrayList<>();
+            while (rs.next()) {
+                pedidos.add(new PedidoDeMaterial(rs.getInt("id_pedido")));
+            }
+            
+            PreparedStatement stmUbi = festival.getConnection().prepareStatement("SELECT * FROM UBICACION");
+            ResultSet rsUbi = stmUbi.executeQuery();
+            
+            ubicaciones = new ArrayList<>();
+            while (rsUbi.next()) {
+                ubicaciones.add(new Ubicacion(
+                        rsUbi.getInt("id_ubicacion"),
+                        rsUbi.getString("nombre_ubicacion"),
+                        rsUbi.getString("nombre_oficial_ubicacion"),
+                        rsUbi.getString("url_ubicacion")
+                ));
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
         initComponents();
     }
 
@@ -24,6 +66,16 @@ public class MenuEntregaMaterial extends javax.swing.JFrame {
     private void initComponents() {
 
         botonVolver = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        comboBoxPedidos = new javax.swing.JComboBox<>();
+        jLabel3 = new javax.swing.JLabel();
+        comboBoxUbicaciones = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+        fieldHora = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        fieldFecha = new javax.swing.JTextField();
+        botonEstablecerEntrega = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -35,19 +87,94 @@ public class MenuEntregaMaterial extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel1.setText("Establece una entrega de material");
+
+        jLabel2.setText("Selecciona el pedido de material");
+
+        comboBoxPedidos.setModel(
+            new javax.swing.DefaultComboBoxModel<>(
+                pedidos.stream()
+                .map(PedidoDeMaterial::toString)
+                .toArray(String[]::new)
+            )
+        );
+
+        jLabel3.setText("Ubicación");
+
+        comboBoxUbicaciones.setModel(
+            new javax.swing.DefaultComboBoxModel<>(
+                ubicaciones.stream()
+                .map(Ubicacion::getNombre)
+                .toArray(String[]::new)
+            )
+        );
+
+        jLabel4.setText("Hora");
+
+        fieldHora.setText("21");
+
+        jLabel5.setText("Fecha");
+
+        fieldFecha.setText("21/11/2019");
+
+        botonEstablecerEntrega.setBackground(new java.awt.Color(0, 204, 204));
+        botonEstablecerEntrega.setText("Establecer entrega");
+        botonEstablecerEntrega.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonEstablecerEntregaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(327, Short.MAX_VALUE)
-                .addComponent(botonVolver)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(botonEstablecerEntrega, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(botonVolver))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+                    .addComponent(comboBoxPedidos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(comboBoxUbicaciones, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5)
+                            .addComponent(fieldHora, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(fieldFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(266, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(comboBoxPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(comboBoxUbicaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(fieldHora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(fieldFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(botonEstablecerEntrega, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(botonVolver)
                 .addContainerGap())
         );
@@ -61,8 +188,87 @@ public class MenuEntregaMaterial extends javax.swing.JFrame {
         });
     }//GEN-LAST:event_botonVolverActionPerformed
 
+    private void botonEstablecerEntregaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEstablecerEntregaActionPerformed
+        int chosenIndex = comboBoxPedidos.getSelectedIndex();
+        if (chosenIndex == -1) {
+            JOptionPane.showMessageDialog(this, "Debes seleccionar un producto", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        PedidoDeMaterial pedido = pedidos.get(chosenIndex);
+        if (pedido == null) {
+            JOptionPane.showMessageDialog(this, "No se ha podido determinar el pedido seleccionado", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        String strFecha = fieldFecha.getText();
+        LocalDate date;
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+            date = LocalDate.parse(strFecha, formatter);
+        } catch (DateTimeParseException ex) {
+            JOptionPane.showMessageDialog(this, "Por favor, introduce una fecha válida en formato 21/11/2019", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        int chosenIndex2 = comboBoxUbicaciones.getSelectedIndex();
+        if (chosenIndex2 == -1) {
+            JOptionPane.showMessageDialog(this, "Debes seleccionar una ubicación", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        Ubicacion ubicacion = ubicaciones.get(chosenIndex2);
+        if (ubicacion == null) {
+            JOptionPane.showMessageDialog(this, "No se ha podido determinar la ubicación seleccionada", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        int hora = -1;
+        try {
+            hora = Integer.parseInt(fieldHora.getText());
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Introduce un número válido como hora", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            System.err.println(ex);
+        }
+        try {
+         
+            CallableStatement stm = festival.getConnection().prepareCall("{call CrearEntrega(?, ?, ?, ?)}");
+            stm.setInt(1, pedido.getId());
+            stm.setInt(2, ubicacion.getId());
+            stm.setInt(3, hora);
+            stm.setTimestamp(4, Timestamp.valueOf(date.atStartOfDay()));
+            
+            stm.execute();
+
+            festival.getConnection().commit();
+            
+            JOptionPane.showMessageDialog(this, "Se ha establecido correctamente el lugar de la entrega", "Entrega establecida", JOptionPane.INFORMATION_MESSAGE);
+            java.awt.EventQueue.invokeLater(() -> {
+                this.setVisible(false);
+            }); 
+        } catch (SQLException ex) {
+            System.err.println(ex);
+            JOptionPane.showMessageDialog(this, ex.toString(), "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_botonEstablecerEntregaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton botonEstablecerEntrega;
     private javax.swing.JButton botonVolver;
+    private javax.swing.JComboBox<String> comboBoxPedidos;
+    private javax.swing.JComboBox<String> comboBoxUbicaciones;
+    private javax.swing.JTextField fieldFecha;
+    private javax.swing.JTextField fieldHora;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     // End of variables declaration//GEN-END:variables
 }
