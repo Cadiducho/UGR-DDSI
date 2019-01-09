@@ -20,4 +20,10 @@ public class Edicion {
         this.id_edicion = id_edicion;
         this.anio = anio;
     }
+
+    @Override
+    public String toString() {
+        return "Edicion{" + "id_edicion=" + id_edicion + ", anio=" + anio + '}';
+    }
+    
 }

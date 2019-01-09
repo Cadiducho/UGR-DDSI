@@ -23,7 +23,7 @@ public class MainFestival {
     }
     
     private Connection connection;
-    private final Edicion edicionActual = new Edicion(2, 2018);
+    private Edicion edicionActual;
 
     public Edicion getEdicionActual() {
         return edicionActual;
@@ -45,13 +45,14 @@ public class MainFestival {
         connection.setAutoCommit(false);
         
         cargando.updateBar(70);
-        PreparedStatement stmt = connection.prepareStatement("select 1 from edicion");
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM edicion MINUS SELECT * FROM edicion WHERE rownum < (SELECT count(*) FROM edicion)");
         ResultSet rs = stmt.executeQuery();
         if (rs.next()) {
-            if (rs.getInt(1) != 1) {
-                System.err.println("No se ha conectado correctamente a la base datos!");
-                return;
-            }
+            edicionActual = new Edicion(rs.getInt("id_edicion"), rs.getInt("anio"));
+            System.out.println(edicionActual);
+        } else {
+            System.err.println("No se ha conectado correctamente a la base datos!");
+            return;
         }
         cargando.updateBar(90);
         
