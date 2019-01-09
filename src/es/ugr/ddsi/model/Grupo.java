@@ -1,9 +1,5 @@
 package es.ugr.ddsi.model;
 
-/**
- *
- * @author Dani
- */
 public class Grupo {
     
     private final String id;
@@ -39,6 +35,7 @@ public class Grupo {
     public Integer getCache() {
         return cache;
     }
+    
     @Override
     public String toString() {
         return nombre + ", " + email + ", " + telefono + ". Cache: " + cache + "€";

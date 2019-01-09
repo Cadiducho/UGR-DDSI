@@ -30,6 +30,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
         botonGrupos = new javax.swing.JButton();
         labelEdicion = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
+        botonPedidoProducto = new javax.swing.JButton();
+        botonEntregaMaterial = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -56,6 +58,22 @@ public class MenuPrincipal extends javax.swing.JFrame {
         labelEdicion.setFont(new java.awt.Font("Tahoma", 2, 18)); // NOI18N
         labelEdicion.setText("Edición " + festival.getEdicionActual().getAnio());
 
+        botonPedidoProducto.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        botonPedidoProducto.setText("Crear pedido de productos");
+        botonPedidoProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonPedidoProductoActionPerformed(evt);
+            }
+        });
+
+        botonEntregaMaterial.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        botonEntregaMaterial.setText("Crear entrega de material");
+        botonEntregaMaterial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonEntregaMaterialActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -67,12 +85,14 @@ public class MenuPrincipal extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(botonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jSeparator1)
-                            .addComponent(botonGrupos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(labelEdicion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jSeparator2))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(botonEntregaMaterial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(botonPedidoProducto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(botonGrupos, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(labelEdicion, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.LEADING))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -89,7 +109,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(5, 5, 5)
                 .addComponent(botonGrupos, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 122, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(botonPedidoProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(botonEntregaMaterial, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(botonSalir)
                 .addContainerGap())
         );
@@ -109,9 +133,23 @@ public class MenuPrincipal extends javax.swing.JFrame {
         });
     }//GEN-LAST:event_botonGruposActionPerformed
 
+    private void botonPedidoProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonPedidoProductoActionPerformed
+        java.awt.EventQueue.invokeLater(() -> {
+            new MenuPedidoProductos(festival).setVisible(true);
+        });
+    }//GEN-LAST:event_botonPedidoProductoActionPerformed
+
+    private void botonEntregaMaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEntregaMaterialActionPerformed
+        java.awt.EventQueue.invokeLater(() -> {
+            new MenuEntregaMaterial(festival).setVisible(true);
+        });
+    }//GEN-LAST:event_botonEntregaMaterialActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton botonEntregaMaterial;
     private javax.swing.JButton botonGrupos;
+    private javax.swing.JButton botonPedidoProducto;
     private javax.swing.JButton botonSalir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JSeparator jSeparator1;

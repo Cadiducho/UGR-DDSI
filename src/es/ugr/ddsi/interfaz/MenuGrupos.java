@@ -2,6 +2,7 @@ package es.ugr.ddsi.interfaz;
 
 import es.ugr.ddsi.MainFestival;
 import es.ugr.ddsi.model.Grupo;
+import es.ugr.ddsi.model.Manager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

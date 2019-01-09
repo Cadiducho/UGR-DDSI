@@ -27,8 +27,7 @@ public class MenuOfertarGrupo extends javax.swing.JFrame {
     public MenuOfertarGrupo(MainFestival festival, Grupo grupo) {
         this.festival = festival;
         this.grupo = grupo;
-        
-                
+               
         try {
             PreparedStatement stm = festival.getConnection().prepareStatement("SELECT * FROM UBICACION");
             ResultSet rs = stm.executeQuery();
