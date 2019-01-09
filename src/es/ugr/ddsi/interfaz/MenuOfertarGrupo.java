@@ -80,6 +80,7 @@ public class MenuOfertarGrupo extends javax.swing.JFrame {
 
             jLabel2.setText("Ubicación a ofertar");
 
+            botonEnviarOferta.setBackground(new java.awt.Color(0, 204, 204));
             botonEnviarOferta.setText("Enviar oferta");
             botonEnviarOferta.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -89,7 +90,9 @@ public class MenuOfertarGrupo extends javax.swing.JFrame {
 
             jLabelTitle.setText("Creando oferta para " + grupo.getNombre());
 
+            botonVolver.setBackground(new java.awt.Color(255, 51, 51));
             botonVolver.setText("Volver");
+            botonVolver.setToolTipText("Volver al menú anterior");
             botonVolver.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     botonVolverActionPerformed(evt);
@@ -173,26 +176,37 @@ public class MenuOfertarGrupo extends javax.swing.JFrame {
             return;
         }
         try {
-            System.out.println("Voy a crear oferta");
-            PreparedStatement stm = festival.getConnection().prepareStatement(""
-                    + "INSERT INTO ofertas VALUES (?, ?, ?, ?, ?, ?)");
-            stm.setInt(1, 3); //FIXME: ID DE OFERTA AUTOMÁTICA?
-            stm.setString(2, grupo.getId());
-            stm.setInt(3, precioOfrecido);
-            stm.setInt(4, festival.getEdicionActual().getId_edicion());
-            stm.setInt(5, ubicacion.getId());
-            stm.setString(6, "SI");
-            
-            stm.executeUpdate();
-            festival.getConnection().commit();
-            System.out.println("creada");
-            
-            JOptionPane.showMessageDialog(this, "Se ha guardado la oferta", "Oferta guardada", JOptionPane.INFORMATION_MESSAGE);
-            java.awt.EventQueue.invokeLater(() -> {
-                this.setVisible(false);
-            });
+
+            PreparedStatement selectId = festival.getConnection().prepareStatement("SELECT (max(id_oferta) + 1) AS id FROM ofertas");
+            ResultSet rsId = selectId.executeQuery();
+            if (rsId.next()) {
+                int nextId = rsId.getInt("id");
+                
+                PreparedStatement stm = festival.getConnection().prepareStatement(""
+                        + "INSERT INTO ofertas VALUES (?, ?, ?, ?, ?, ?)");
+                stm.setInt(1, nextId);
+                stm.setString(2, grupo.getId());
+                stm.setInt(3, precioOfrecido);
+                stm.setInt(4, festival.getEdicionActual().getId_edicion());
+                stm.setInt(5, ubicacion.getId());
+                stm.setString(6, "SI");
+
+                stm.executeUpdate();
+                
+                festival.getConnection().commit();
+                
+                JOptionPane.showMessageDialog(this, "Se ha guardado la oferta", "Oferta guardada", JOptionPane.INFORMATION_MESSAGE);
+                java.awt.EventQueue.invokeLater(() -> {
+                    this.setVisible(false);
+                });
+            } else {
+                JOptionPane.showMessageDialog(this, "No se ha podido determinar la siguiente id de ofertas", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            }
         } catch (SQLException ex) {
             System.err.println(ex);
+            JOptionPane.showMessageDialog(this, ex.toString(), "Error",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_botonEnviarOfertaActionPerformed
 

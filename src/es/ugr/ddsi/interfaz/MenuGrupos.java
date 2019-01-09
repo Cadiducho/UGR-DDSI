@@ -26,8 +26,7 @@ public class MenuGrupos extends javax.swing.JFrame {
         initComponents();
         
         try {
-            PreparedStatement stm = festival.getConnection().prepareStatement("SELECT * FROM GRUPO WHERE id_edicion = ?");
-            stm.setInt(1, festival.getEdicionActual().getId_edicion());
+            PreparedStatement stm = festival.getConnection().prepareStatement("SELECT * FROM GRUPO");
             ResultSet rs = stm.executeQuery();
             
             grupos = new ArrayList<>();
@@ -37,8 +36,7 @@ public class MenuGrupos extends javax.swing.JFrame {
                         rs.getString("nombre_grupo"),
                         rs.getString("email_grupo"),
                         rs.getString("telefono_grupo"),
-                        rs.getInt("cache_grupo"),
-                        rs.getInt("id_edicion")
+                        rs.getInt("cache_grupo")
                 ));
             }
             
@@ -64,6 +62,7 @@ public class MenuGrupos extends javax.swing.JFrame {
         labelEdicionActual = new javax.swing.JLabel();
         botonOfertar = new javax.swing.JButton();
         botonVolver = new javax.swing.JButton();
+        botonAsignarManager = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -85,10 +84,19 @@ public class MenuGrupos extends javax.swing.JFrame {
             }
         });
 
+        botonVolver.setBackground(new java.awt.Color(255, 51, 51));
         botonVolver.setText("Volver");
+        botonVolver.setToolTipText("Volver al menú anterior");
         botonVolver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botonVolverActionPerformed(evt);
+            }
+        });
+
+        botonAsignarManager.setText("Asignar Manager");
+        botonAsignarManager.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonAsignarManagerActionPerformed(evt);
             }
         });
 
@@ -100,13 +108,14 @@ public class MenuGrupos extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(scrollGrupos)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(labelEdicionActual)
-                        .addGap(0, 561, Short.MAX_VALUE))
                     .addComponent(botonOfertar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(botonVolver)))
+                        .addComponent(botonVolver))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(labelEdicionActual)
+                        .addGap(0, 561, Short.MAX_VALUE))
+                    .addComponent(botonAsignarManager, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -118,9 +127,11 @@ public class MenuGrupos extends javax.swing.JFrame {
                 .addComponent(scrollGrupos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(botonOfertar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(botonAsignarManager, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(botonVolver)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -152,7 +163,24 @@ public class MenuGrupos extends javax.swing.JFrame {
         });
     }//GEN-LAST:event_botonVolverActionPerformed
 
+    private void botonAsignarManagerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAsignarManagerActionPerformed
+        int chosenIndex = listaGrupos.getSelectedIndex();
+        if (chosenIndex == -1) {
+            JOptionPane.showMessageDialog(this, "Debes seleccionar un grupo al que asignar un manager", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        Grupo ofertado = grupos.get(chosenIndex);
+        if (ofertado == null) {
+            JOptionPane.showMessageDialog(this, "No se ha podido determinar el grupo seleccionado", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+    }//GEN-LAST:event_botonAsignarManagerActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton botonAsignarManager;
     private javax.swing.JButton botonOfertar;
     private javax.swing.JButton botonVolver;
     private javax.swing.JLabel labelEdicionActual;
