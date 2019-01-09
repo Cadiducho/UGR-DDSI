@@ -15,8 +15,8 @@ import javax.swing.JOptionPane;
 public class MenuGrupos extends javax.swing.JFrame {
 
     private final MainFestival festival;
-    
     private ArrayList<Grupo> grupos;
+    
     /**
      * Creates new form MenuGrupos
      * @param festival
@@ -93,7 +93,7 @@ public class MenuGrupos extends javax.swing.JFrame {
             }
         });
 
-        botonAsignarManager.setText("Asignar Manager");
+        botonAsignarManager.setText("Asignar Manager para la edición actual");
         botonAsignarManager.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botonAsignarManagerActionPerformed(evt);
@@ -114,8 +114,8 @@ public class MenuGrupos extends javax.swing.JFrame {
                         .addComponent(botonVolver))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(labelEdicionActual)
-                        .addGap(0, 561, Short.MAX_VALUE))
-                    .addComponent(botonAsignarManager, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(botonAsignarManager, javax.swing.GroupLayout.DEFAULT_SIZE, 689, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -177,6 +177,10 @@ public class MenuGrupos extends javax.swing.JFrame {
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
+        
+        java.awt.EventQueue.invokeLater(() -> {
+            new MenuAsignarManager(festival, ofertado).setVisible(true);
+        });
     }//GEN-LAST:event_botonAsignarManagerActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

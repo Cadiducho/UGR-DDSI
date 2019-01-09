@@ -49,7 +49,6 @@ public class MainFestival {
         ResultSet rs = stmt.executeQuery();
         if (rs.next()) {
             edicionActual = new Edicion(rs.getInt("id_edicion"), rs.getInt("anio"));
-            System.out.println(edicionActual);
         } else {
             System.err.println("No se ha conectado correctamente a la base datos!");
             return;
