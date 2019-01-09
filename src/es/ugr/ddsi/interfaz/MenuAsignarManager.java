@@ -82,6 +82,7 @@ public class MenuAsignarManager extends javax.swing.JFrame {
             }
         });
 
+        botonAsignar.setBackground(new java.awt.Color(0, 204, 204));
         botonAsignar.setText("Asignar mánager");
         botonAsignar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

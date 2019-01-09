@@ -22,6 +22,7 @@ public class MenuPedidoProductos extends javax.swing.JFrame {
     
     /**
      * Creates new form MenuPedidoProductos
+     * @param festival
      */
     public MenuPedidoProductos(MainFestival festival) {
         this.festival = festival;
@@ -102,6 +103,7 @@ public class MenuPedidoProductos extends javax.swing.JFrame {
             }
         });
 
+        botonPedidoProducto.setBackground(new java.awt.Color(0, 204, 204));
         botonPedidoProducto.setText("Realizar pedido");
         botonPedidoProducto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -189,6 +191,8 @@ public class MenuPedidoProductos extends javax.swing.JFrame {
         try {
             cantidad = Integer.parseInt(cantidadStr);
         } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Introduce un número válido como cantidad", "Error",
+                    JOptionPane.ERROR_MESSAGE);
             System.err.println(ex);
         }
         if (cantidad < 1) {
